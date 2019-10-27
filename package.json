@@ -13,6 +13,8 @@
     "eslint-plugin-import": "^2.18.2"
   },
   "dependencies": {
+    "prompt": "^1.0.0",
+    "prompt-async": "^0.9.9",
     "yargs": "^14.2.0"
   }
 }

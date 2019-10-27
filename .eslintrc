@@ -3,6 +3,7 @@
   "rules": {
     "no-plusplus":"off",
     "no-console":"off",
-    "no-param-reassign":"off"
+    "no-param-reassign":"off",
+    "no-await-in-loop":"off"
   }
 }
