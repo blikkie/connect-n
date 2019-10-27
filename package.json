@@ -1,0 +1,18 @@
+{
+  "name": "connect-n",
+  "version": "0.1.0",
+  "description": "A command-line connect four kind of game with arbitrary board size and win conditions ",
+  "main": "index.js",
+  "repository": "git@github.com:blikkie/connect-n.git",
+  "author": "(Remco van Bree <blikkie@gmail.com>)",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "dependencies": {
+    "yargs": "^14.2.0"
+  }
+}
