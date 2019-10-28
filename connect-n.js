@@ -13,8 +13,8 @@ const height = argv.height || 6;
 const length = argv.length || 4;
 
 function createArray(w, h) {
-  const array = new Array(h);
-  for (let n = 0; n < w; n++) {
+  const array = [];
+  for (let n = 0; n < h; n++) {
     array[n] = new Array(w);
   }
 
@@ -31,13 +31,12 @@ for (let i = 0; i < width; i++) {
 board.push(indexRow);
 
 function printBoard(array) {
-  array.forEach((row) => {
-    for (let i = 0; i < width; i++) {
-      if (row[i] === undefined) {
-        row[i] = '.';
-      }
-    }
-    console.log(row);
+  const displayArray = Array.from(array);
+  console.log(board);
+  displayArray.forEach((row) => {
+    // The table will only look good if there are fewer than 10 columns
+    // TODO: use a fancy curses library or something to make tables look good
+    console.log(`| ${row.join(' | ')} |`.replace(/ {2}/g, ' . '));
   });
 }
 
@@ -66,7 +65,6 @@ async function gameLoop() {
   while (!result) {
     for (let counter = 0; counter < width * height; counter++) {
       printBoard(board);
-      console.log('trying ');
       const coord = await dropStone();
 
       // here we're going to add some logic to walk down, horizontally and diagonally to find the
