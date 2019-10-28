@@ -32,9 +32,7 @@ for (let i = 0; i < width; i++) {
 board.push(indexRow);
 
 function printBoard(array) {
-  const displayArray = Array.from(array);
-  console.log(board);
-  displayArray.forEach((row) => {
+  array.forEach((row) => {
     // The table will only look good if there are fewer than 10 columns
     // TODO: use a fancy curses library or something to make tables look good
     console.log(`| ${row.join(' | ')} |`.replace(/ {2}/g, ' . '));
