@@ -46,13 +46,12 @@ function testColumn(index, playerSymbol) {
     return false;
   }
   for (let i = 0; i < height; i++) {
-    if (!board[i][index]) {
-      result.x = index;
-      result.y = i;
-    } else {
+    if (board[i][index]) {
       board[i - 1][index] = playerSymbol;
       return result;
     }
+    result.x = index;
+    result.y = i;
   }
   board[height - 1][index] = playerSymbol;
   return result;
@@ -81,21 +80,23 @@ async function dropStone(playerSymbol) {
 
 async function gameLoop() {
   let result;
-  while (!result) {
-    for (let counter = 0; counter < width * height; counter++) {
-      printBoard(board);
-      const coord = await dropStone(player);
+  for (let counter = 0; counter < width * height; counter++) {
+    printBoard(board);
+    const coord = await dropStone(player);
 
-      console.log(coord);
+    console.log(coord);
 
-      // here we're going to add some logic to walk down, horizontally and diagonally to find the
-      // length of the line of matching (if any) tiles in the array
+    // here we're going to add some logic to walk down, horizontally and diagonally to find the
+    // length of the line of matching (if any) tiles in the array
 
-      // switch players
-      player === 'x' ? player = 'o' : player = 'x';
+    if (result) {
+      break;
     }
-    result = "It's a draw!";
+
+    // switch players
+    player === 'x' ? player = 'o' : player = 'x';
   }
+  result = "It's a draw!";
   return result;
 }
 
