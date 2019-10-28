@@ -11,6 +11,7 @@ const { argv } = require('yargs')
 const width = argv.width || 7;
 const height = argv.height || 6;
 const length = argv.length || 4;
+let player = 'x';
 
 function createArray(w, h) {
   const array = [];
@@ -40,24 +41,44 @@ function printBoard(array) {
   });
 }
 
-async function dropStone() {
-  const coord = {};
-  const schema = {
-    properties: {
-      column: {
-        description: 'Enter the column you wish to drop your stone in',
-        pattern: '^[1-9]\\d*$',
-        message: 'Must be a positive integer',
-        required: true,
-      },
-    },
-  };
-  await prompt.start();
-  const { column } = await prompt.get(schema);
-  console.log(column);
+function testColumn(index, playerSymbol) {
+  const result = {};
+  if (board[0][index]) {
+    console.log('Column is full, try another one');
+    return false;
+  }
+  for (let i = 0; i < height; i++) {
+    if (!board[i][index]) {
+      result.x = index;
+      result.y = i;
+    } else {
+      board[i - 1][index] = playerSymbol;
+      return result;
+    }
+  }
+  board[height - 1][index] = playerSymbol;
+  return result;
+}
 
-  // here we will need to add some logic that will attempt to drop a token down a column. If the
-  // column is full we will re-prompt the player to enter their selection
+async function dropStone(playerSymbol) {
+  let coord;
+  while (!coord) {
+    const schema = {
+      properties: {
+        column: {
+          description: 'Enter the column you wish to drop your stone in',
+          pattern: '^[1-9]\\d*$',
+          message: 'Must be a positive integer',
+          required: true,
+        },
+      },
+    };
+    await prompt.start();
+    const { column } = await prompt.get(schema);
+    coord = testColumn(column - 1, playerSymbol);
+  }
+
+  return coord;
 }
 
 async function gameLoop() {
@@ -65,10 +86,15 @@ async function gameLoop() {
   while (!result) {
     for (let counter = 0; counter < width * height; counter++) {
       printBoard(board);
-      const coord = await dropStone();
+      const coord = await dropStone(player);
+
+      console.log(coord);
 
       // here we're going to add some logic to walk down, horizontally and diagonally to find the
       // length of the line of matching (if any) tiles in the array
+
+      // switch players
+      player === 'x' ? player = 'o' : player = 'x';
     }
     result = "It's a draw!";
   }
@@ -79,6 +105,7 @@ console.log(`Welcome to Connect-N! The goal of the game is to make a line that i
 
 async function run() {
   const result = await gameLoop();
+  printBoard(board);
   console.log(result);
 }
 
