@@ -84,7 +84,26 @@ async function gameLoop() {
     printBoard(board);
     const coord = await dropStone(player);
 
-    console.log(coord);
+    const leftSpace = coord.x - 1;
+    const rightSpace = board[0].length - coord.x;
+    const upSpace = coord.y - 1;
+    const downSpace = board.length - 2 - coord.y;
+
+    // I know this is counter-intuitive, but to access coordinates in the board you need to call
+    // `board[coord.y][coord.x]` (this is a lesson learnt from 30 minutes of debugging).
+    if (downSpace + 1 >= length) {
+      let checkedLength = 1;
+      for (let i = 1; i <= downSpace; i++) {
+        if (board[coord.y + i][coord.x] === player) {
+          checkedLength++;
+        } else {
+          break;
+        }
+      }
+      if (checkedLength >= length) {
+        return `Player ${player} has won the game`;
+      }
+    }
 
     // here we're going to add some logic to walk down, horizontally and diagonally to find the
     // length of the line of matching (if any) tiles in the array
