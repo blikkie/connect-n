@@ -87,7 +87,7 @@ async function gameLoop() {
     const leftSpace = coord.x - 1;
     const rightSpace = board[0].length - coord.x;
     const upSpace = coord.y - 1;
-    const downSpace = board.length - 2 - coord.y;
+    const downSpace = board.length - 2 - coord.y; // the index row does not count
 
     // I know this is counter-intuitive, but to access coordinates in the board you need to call
     // `board[coord.y][coord.x]` (this is a lesson learnt from 30 minutes of debugging).
